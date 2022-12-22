@@ -1,0 +1,101 @@
+.character-name {
+  color: white;
+  margin-bottom: -1px;
+  margin-left: -1px;
+}
+
+.guild-name {
+  color: white;
+  margin-bottom: -2px;
+}
+
+.realm-name {
+  color: white;
+  margin-bottom: -2px;
+}
+
+.profile-image {
+  width: 135px;
+  height: 120px;
+}
+
+.summary {
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+
+.Death-Knight {
+  color: #c41e3a;
+}
+
+.Demon-Hunter {
+  color: #a330c9;
+}
+
+.Druid {
+  color: #ff7c0a;
+}
+
+.Evoker {
+  color: #33937f;
+}
+
+.Hunter {
+  color: #aad372;
+}
+
+.Mage {
+  color: #3fc7eb;
+}
+
+.Monk {
+  color: #00ff98;
+}
+
+.Paladin {
+  color: #f48cba;
+}
+
+.Priest {
+  color: #fff;
+}
+
+.Rogue {
+  color: #fff468;
+}
+
+.Shaman {
+  color: #0070dd;
+}
+
+.Warlock {
+  color: #8788ee;
+}
+
+.Warrior {
+  color: #c69b6d;
+}
+
+.alliance {
+  color: #6699ff;
+}
+
+.horde {
+  color: #df2020;
+}
+
+.hordebanner1 {
+  padding: 10px;
+  background-image: url(/Users/jerrycox/Documents/dev/wow-blacklist/client/src/assets/hordeBanner.jpeg);
+  background-position: right;
+  background-size: 60%;
+}
+
+
+.alliancebanner1 {
+  padding: 10px;
+  background-image: url(/Users/jerrycox/Documents/dev/wow-blacklist/client/src/assets/allianceBanner.jpeg);
+  background-position: right;
+  background-size: 60%;
+}
