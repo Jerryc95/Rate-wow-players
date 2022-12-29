@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import BackButton from "../components/BackButton";
+// import HomeButton from "../components/HomeButton";
+import Navbar from "../components/Navbar";
 
-import supabase from "../Provider/supabase";
+// import supabase from "../Provider/supabase";
+import { useAuth } from "../Context/Auth";
 
 const ForgotPassword = () => {
-    const [userEmail, setUserEmail] = useState("");
+  const auth = useAuth();
+    const [email, setEmail] = useState("");
 
     const resetPassword = async () => {
-        const { data, error } = await supabase.auth.resetPasswordForEmail(userEmail, {
-            redirectTo: 'https://example.com/update-password',
-          })
+      auth.resetPassword(email)
+
     }
 
     return(
-        <div className="container mt-2">
+        <div className="container">
         <div>
-          <BackButton />
+          <Navbar />
         </div>
         <div className="row justify-content-center p-5">
           <div className="d-flex justify-content-center p-2">
@@ -35,9 +37,9 @@ const ForgotPassword = () => {
                 required="required"
                 type="text"
                 placeholder="Enter email"
-                value={userEmail}
+                value={email}
                 onChange={(e) => {
-                  setUserEmail(e.target.value);
+                  setEmail(e.target.value);
                 }}
               />
             </div>

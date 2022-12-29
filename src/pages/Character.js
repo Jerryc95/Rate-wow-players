@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 import "./Character.css";
 
-import BackButton from "../components/BackButton";
 import Review from "../components/Review";
-import supabase from "../Provider/supabase";
+import Navbar from "../components/Navbar";
+import { useAuth } from "../Context/Auth";
 
 const Character = () => {
+  const auth = useAuth();
   const params = useParams();
-  const [showingReviews, setShowingReviews] = useState(false);
   const [showingData, setShowingData] = useState(false);
   const [character, setCharacter] = useState("");
-  const [newReview, setNewReview] = useState("");
+  const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
 
-  const handleReviewClick = () => {
-    setShowingReviews(!showingReviews);
-  };
-
-  const addReview = (event) => {
-    
-    setNewReview("");
-  };
 
   const fetchCharacter = () => {
     fetch(
@@ -44,17 +37,22 @@ const Character = () => {
   };
 
   const fetchReviews = async () => {
-    const { data, error } = await supabase
-      .from("reviews")
-      .select(
-        "id, review, profiles:user_id(username),characters:character_id(id)"
-      );
-    if (error) {
-      console.log(error);
-    } else {
-      setReviews(data);
-    }
+    const reviews = await auth.getReviews();
+    setReviews(reviews);
   };
+
+  const addNewReview = async() => {
+    const userId = auth.user.id;
+    const id = uuidv4();
+
+    const newReview = await auth.addReview(id, review, character.profile_url, character.name, character.realm, userId)
+    console.log(newReview)
+    setReview("");
+    const reload = await fetchReviews()
+
+    return reload;
+    
+  }
 
   useEffect(() => {
     fetchCharacter();
@@ -64,7 +62,7 @@ const Character = () => {
   return (
     <div className="container mt-2">
       <div>
-        <BackButton />
+        <Navbar />
       </div>
       <div>
         {showingData ? (
@@ -137,51 +135,62 @@ const Character = () => {
               </div>
             </div>
             <div className="d-flex justify-content-center pt-5">
-              {showingReviews ? (
+              
                 <div className="col justify-content-center">
                   <div>
                     {reviews
                       .filter(
                         (review) =>
-                          review.characters.id === character.profile_url
+                          review.character_id === character.profile_url
                       )
                       .map((review) => (
                         <Review
-                          username={review.users.username}
+                          username={review.profiles.username}
+                          character = {review.character}
+                          realm= {review.realm}
                           review={review.review}
-                          id={review.id}
+                          key={review.id}
                         />
                       ))}
-
+                    { auth.user ? (
+                      <div>
                     <textarea
                       className="form-control"
                       required="required"
                       placeholder="Add review..."
-                      value={newReview}
+                      value={review}
                       onChange={(e) => {
-                        setNewReview(e.target.value);
+                        setReview(e.target.value);
                       }}
                     ></textarea>
-                  </div>
                   <div className="d-flex justify-content-center mt-3">
                     <button
                       className="btn btn-dark"
                       type="button"
-                      onClick={handleReviewClick}
+                      onClick={addNewReview}
                     >
-                      Hide Reviews
+                      Add Review
                     </button>
                   </div>
+                      </div>
+                    ) : (
+                      <div className="d-flex justify-content-center mt-3">
+                        <Link to="/login">
+                          <button
+                        className="btn btn-dark"
+                        type="button"
+                      >
+                        Sign in to add a review
+                      </button>
+                        </Link>
+                    
+                    </div>
+                    )
+                    }
+                    </div>
+                    
                 </div>
-              ) : (
-                <button
-                  className="btn btn-dark"
-                  type="button"
-                  onClick={handleReviewClick}
-                >
-                  See Reviews
-                </button>
-              )}
+           
             </div>
           </div>
         ) : (

@@ -1,38 +1,43 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import BackButton from "../components/BackButton";
-
-import supabase from "../Provider/supabase";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { useAuth } from "../Context/Auth";
 
 const Register = () => {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const [errorMessage, setErrorMessage] = useState('');
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const createUser = async () => {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          username: username,
-        },
-      },
-    });
-    if (error) {
-      console.log(error);
+    const signUp = await auth.signUp(email, username, password)
+    if(signUp) {
+        console.log(signUp)
+        console.log(signUp.message)
+        setErrorMessage('Unable to create account. please try again later.')
+    } else if(signUp.session === null) {
+      setErrorMessage('Account already exists with email.')
     } else {
-      console.log(data);
+      setErrorMessage('Please confirm your email.')
     }
     setEmail("");
-    setPassword("");
     setUsername("");
+    setPassword("");
   };
 
+  useEffect(()=> {
+    if(auth.user) {
+      return navigate('/login')
+    }
+  },[auth.user]);
+
   return (
-    <div className="container mt-2">
+    <div className="container">
       <div>
-        <BackButton />
+        <Navbar />
       </div>
       <div className="row justify-content-center p-5">
         <div className="d-flex justify-content-center p-2">
@@ -43,9 +48,7 @@ const Register = () => {
         </div>
         <form className="col">
           <div className="form-group justify-content-center">
-            <label className="text-muted">
-              Email address
-            </label>
+            <label className="text-muted">Email address</label>
             <input
               className="form-control mb-1"
               required="required"
@@ -58,9 +61,7 @@ const Register = () => {
             />
           </div>
           <div className="form-group justify-content-center">
-            <label className="text-muted">
-              Create a username
-            </label>
+            <label className="text-muted">Create a username</label>
             <input
               className="form-control mt-1"
               required="required"
@@ -73,9 +74,7 @@ const Register = () => {
             />
           </div>
           <div className="form-group justify-content-center">
-            <label className="text-muted">
-              Your Password
-            </label>
+            <label className="text-muted">Your Password</label>
             <input
               className="form-control mt-1"
               required="required"
@@ -88,12 +87,13 @@ const Register = () => {
             />
           </div>
         </form>
+        <span className="text-danger d-flex justify-content-center">{errorMessage}</span>
         <div className="d-flex justify-content-center p-2">
-          <Link className="pt-2" to="/profile">
+          {/* <Link className="pt-2" to="/"> */}
             <button className="btn btn-dark" type="button" onClick={createUser}>
               Sign Up
             </button>
-          </Link>
+          {/* </Link> */}
         </div>
         <div className="col pt-2">
           <Link className="text-secondary" to="/forgot">
