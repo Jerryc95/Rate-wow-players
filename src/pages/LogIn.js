@@ -15,6 +15,16 @@ const Login = () => {
 
   const logInUser = async () => {
     const login = await auth.login(email, password);
+    switch(login.error.message) {
+      case 'Incorrect email or password. Please try again.':
+        setErrorMessage('Incorrect email or password. Please try again.')
+        break;
+        case 'Database error granting user':
+          setErrorMessage('Unable to log in. Please try again later.')
+        default:
+
+} 
+
     if (login.error) {
       console.log(login.error.message);
       setErrorMessage('Incorrect email or password. Please try again.')
