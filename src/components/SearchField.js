@@ -1,18 +1,43 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SearchField = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [realm, setRealm] = useState("");
+  const [resultMessage, setResultMessage] = useState('');
 
   const handleSearchClick = (event) => {
     if (name !== "" && realm !== "") {
+      fetchCharacter()
       setName("");
       setRealm("");
     } else {
-      alert("Please enter both the character and realm name");
+      setResultMessage("Please enter both the character and realm name")
       event.preventDefault()
     }
+  };
+
+  const fetchCharacter = () => {
+    fetch(
+      `https://raider.io/api/v1/characters/profile?region=us&realm=${realm}&name=${name}&fields=guild%2Craid_progression%2Cmythic_plus_best_runs%2Cmythic_plus_scores_by_season%3Acurrent%2Cmythic_plus_ranks`
+    )
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        switch(result.message) {
+        case 'Could not find requested character':
+          setResultMessage('Character does not exist on that realm')
+          break;
+          case `Failed to find realm ${realm} in region us`:
+          setResultMessage("US realm doesn not exist.")
+          break;
+          default:
+            navigate(`/character/${realm}/${name}`)
+            
+        }
+      });
+     
   };
 
   return (
@@ -45,7 +70,6 @@ const SearchField = () => {
       />
 
       <div className="d-flex justify-content-center p-2">
-        <Link to={`/character/${realm}/${name}`}>
           <button
             className="btn btn-dark"
             type="button"
@@ -53,8 +77,8 @@ const SearchField = () => {
           >
             Look Up
           </button>
-        </Link>
       </div>
+      <span className="text-danger d-flex justify-content-center">{resultMessage}</span>
     </div>
   );
 };

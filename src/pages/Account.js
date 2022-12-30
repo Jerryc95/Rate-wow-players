@@ -8,10 +8,8 @@ const Account = () => {
   const auth = useAuth();
   const [reviews, setReviews] = useState([]);
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [toggleEmail, setToggleEmail] = useState(false);
-  const [toggleUsername, setToggleUsername] = useState(false);
   const [togglePassword, setTogglePassword] = useState(false);
 
   const fetchReviews = async () => {
@@ -40,18 +38,6 @@ const Account = () => {
       alert("Error updating password.");
     } else {
       alert("Password updated successfully!");
-    }
-  };
-
-  const updateUsername = async () => {
-    const newUsername = auth.updateUsername(username);
-    setUsername("");
-    setToggleUsername(false);
-    if (newUsername.error) {
-      console.log(newUsername.error.message);
-      alert("Error updating password.");
-    } else {
-      alert("Username updated successfully!");
     }
   };
 
@@ -104,45 +90,6 @@ const Account = () => {
               onClick={() => setToggleEmail(true)}
             >
               Update Email
-            </button>
-          </div>
-        )}
-
-        {toggleUsername ? (
-          <div className="input-group mb-3">
-            <input
-              className="form-control"
-              required="required"
-              type="text"
-              placeholder="Enter new username"
-              value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-            />
-            <button
-              className="btn btn-light"
-              type="button"
-              onClick={() => setToggleUsername(false)}
-            >
-              Cancel
-            </button>
-            <button
-              className="btn btn-dark"
-              type="button"
-              onClick={updateUsername}
-            >
-              Submit
-            </button>
-          </div>
-        ) : (
-          <div>
-            <button
-              className="btn btn-dark mb-3"
-              type="button"
-              onClick={() => setToggleUsername(true)}
-            >
-              Update username
             </button>
           </div>
         )}

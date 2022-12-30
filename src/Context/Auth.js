@@ -65,6 +65,20 @@ const useProvideAuth = () => {
     }
   };
 
+  const getUsers = async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(
+        "username, email"
+      );
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(data);
+      return data;
+    }
+  };
+
   const getReviews = async () => {
     const { data, error } = await supabase
       .from("reviews")
@@ -164,6 +178,7 @@ const useProvideAuth = () => {
     user,
     addReview,
     getReviews,
+    getUsers,
     signUp,
     login,
     logout,
