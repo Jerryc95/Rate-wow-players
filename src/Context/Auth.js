@@ -14,7 +14,7 @@ export const useAuth = () => {
 
 const useProvideAuth = () => {
   const [user, setUser] = useState(null);
-  const [newPassword, setNewPassword] = useState(null);
+  // const [newPassword, setNewPassword] = useState(null);
 
   const signUp = async (email, username, password) => {
     const { data, error } = await supabase.auth.signUp({
@@ -146,9 +146,9 @@ const useProvideAuth = () => {
     }
   };
 
-  const resetPassword = (password) => {
-    setNewPassword(password);
-  };
+  // const resetPassword = (password) => {
+  //   setNewPassword(password);
+  // };
 
   useEffect(() => {
     const session = supabase.auth.getSession();
@@ -172,7 +172,7 @@ const useProvideAuth = () => {
 
           if (data) alert("Password updated successfully!");
           if (error) alert("There was an error updating your password.");
-
+          break;
         // const { data } = await supabase.auth.updateUser({
         //   password: newPassword,
         // });
@@ -192,7 +192,7 @@ const useProvideAuth = () => {
     signUp,
     login,
     logout,
-    resetPassword,
+    // resetPassword,
     forgotPassword,
     updateEmail,
     updatePassword,
