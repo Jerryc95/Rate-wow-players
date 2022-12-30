@@ -6,33 +6,56 @@ import { useAuth } from "../Context/Auth";
 const Register = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-
-  const [errorMessage, setErrorMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const createUser = async () => {
-    const signUp = await auth.signUp(email, username, password)
-    if(signUp) {
-        console.log(signUp)
-        console.log(signUp.message)
-        setErrorMessage('Unable to create account. please try again later.')
-    } else if(signUp.session === null) {
-      setErrorMessage('Account already exists with email.')
+    const users = await auth.getUsers();
+    if (users.some(user => user.username === username)) {
+      console.log(users.map((user) => user.username));
+      console.log([username]);
+      setAlertMessage("Username already exists.");
+    } else if (users.some(user => user.email === email)) {
+      console.log(users.map((user) => user.email));
+      console.log([email]);
+      setAlertMessage("An account is already associated with that email.");
     } else {
-      setErrorMessage('Please confirm your email.')
+      const signUp = await auth.signUp(email, username.toLowerCase, password);
+      if(auth.user) {
+        setAlertMessage("Account created! Please check your email to confirm your account.")
+      }
+      console.log(signUp.message);
+      switch (signUp.message) {
+        case "Password should be at least 8 characters":
+          setAlertMessage("Password must be 8 characters long.");
+          break;
+        case "Unable to validate email address: invalid format":
+          setAlertMessage("Please use a valid email address.");
+          break;
+        default:
+      }
     }
+
+    // if(signUp) {
+    //     console.log(signUp.message)
+    //     setErrorMessage('Unable to create account. please try again later.')
+    // } else if(signUp.session === null) {
+    //   setErrorMessage('Account already exists with email.')
+    // } else {
+    //   setErrorMessage('Please confirm your email.')
+    // }
     setEmail("");
     setUsername("");
     setPassword("");
   };
 
-  useEffect(()=> {
-    if(auth.user) {
-      return navigate('/login')
+  useEffect(() => {
+    if (auth.user) {
+      return navigate("/login");
     }
-  },[auth.user]);
+  }, []);
 
   return (
     <div className="container">
@@ -87,13 +110,15 @@ const Register = () => {
             />
           </div>
         </form>
-        <span className="text-danger d-flex justify-content-center">{errorMessage}</span>
+        <span className="text-danger d-flex justify-content-center">
+          {alertMessage}
+        </span>
         <div className="d-flex justify-content-center p-2">
-          {/* <Link className="pt-2" to="/"> */}
-            <button className="btn btn-dark" type="button" onClick={createUser}>
-              Sign Up
-            </button>
-          {/* </Link> */}
+          
+          <button className="btn btn-dark" type="button" onClick={createUser}>
+            Sign Up
+          </button>
+      
         </div>
         <div className="col pt-2">
           <Link className="text-secondary" to="/forgot">

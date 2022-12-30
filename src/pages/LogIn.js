@@ -21,6 +21,7 @@ const Login = () => {
         break;
         case 'Database error granting user':
           setErrorMessage('Unable to log in. Please try again later.')
+          break;
         default:
 
 } 

@@ -1,42 +1,40 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// import HomeButton from "../components/HomeButton";
 import Navbar from "../components/Navbar";
 
-// import supabase from "../Provider/supabase";
 import { useAuth } from "../Context/Auth";
 
 const ForgotPassword = () => {
   const auth = useAuth();
-    const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
-    const resetPassword = async () => {
-      auth.resetPassword(email)
+  const forgotPassword = async () => {
+    auth.forgotPassword(email);
+    setAlertMessage("An email link has been sent to reset your password.");
+  };
 
-    }
-
-    return(
-        <div className="container">
-        <div>
-          <Navbar />
-        </div>
+  return (
+    <div className="container">
+      <div>
+        <Navbar />
+      </div>
+      <div className="container">
         <div className="row justify-content-center p-5">
           <div className="d-flex justify-content-center p-2">
             <h1 className="font-weight-bold">Rate WoW Players</h1>
           </div>
           <div className="d-flex justify-content-center p-2">
-            <h3 className="white-text">Enter email below</h3>
+            <h3 className="white-text">Enter your email</h3>
           </div>
-          <form className="col">
+          <form className="row justify-content-center p-2">
             <div className="form-group justify-content-center">
-              <label className="text-muted">
-                Email address
-              </label>
+              <label className="text-muted">Email</label>
               <input
                 className="form-control mb-1"
                 required="required"
                 type="text"
-                placeholder="Enter email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -44,23 +42,22 @@ const ForgotPassword = () => {
               />
             </div>
           </form>
-          <div className="d-flex justify-content-center p-2">
-            <Link className="pt-2">
-              <button className="btn btn-dark" type="button" onClick={resetPassword}>
-                Reset
-              </button>
-            </Link>
-          </div>
-          <div className="col pt-2">
-            <Link className="text-secondary" to='/register'>
-              <div className="d-flex justify-content-center">
-                <span className="">Don't have an account? Sign up</span>
-              </div>
-            </Link>
+          <span className="text-danger d-flex justify-content-center">
+            {alertMessage}
+          </span>
+          <div className="d-flex justify-content-center">
+            <button
+              className="btn btn-dark"
+              type="button"
+              onClick={forgotPassword}
+            >
+              Reset
+            </button>
           </div>
         </div>
       </div>
-    )
-}
+    </div>
+  );
+};
 
-export default ForgotPassword
+export default ForgotPassword;

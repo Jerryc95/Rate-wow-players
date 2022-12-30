@@ -14,7 +14,7 @@ export const useAuth = () => {
 
 const useProvideAuth = () => {
   const [user, setUser] = useState(null);
-  // const [newPassword, setNewPassword] = useState(null);
+  const [newPassword, setNewPassword] = useState(null);
 
   const signUp = async (email, username, password) => {
     const { data, error } = await supabase.auth.signUp({
@@ -28,10 +28,10 @@ const useProvideAuth = () => {
     });
     if (error) {
       console.log(error);
-      return error
+      return error;
     } else {
       console.log(data);
-      return data
+      return data;
     }
   };
 
@@ -56,7 +56,7 @@ const useProvideAuth = () => {
     setUser(null);
   };
 
-  const resetPassword = async (email) => {
+  const forgotPassword = async (email) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: "http://localhost:3000/reset-password",
     });
@@ -68,9 +68,7 @@ const useProvideAuth = () => {
   const getUsers = async () => {
     const { data, error } = await supabase
       .from("profiles")
-      .select(
-        "username, email"
-      );
+      .select("username, email");
     if (error) {
       console.log(error);
     } else {
@@ -115,38 +113,43 @@ const useProvideAuth = () => {
   };
 
   const updateEmail = async (email) => {
-    const { data, error } = await supabase.auth.updateUser({email: email})
+    const { data, error } = await supabase.auth.updateUser({ email: email });
     if (data) {
-      return "Email updated successfully!"
+      return "Email updated successfully!";
     }
     if (error) {
-      return "There was an error updating your email."
+      return "There was an error updating your email.";
     }
-
   };
 
-   const updateUsername = async (username) => {
+  const updateUsername = async (username) => {
     const { data, error } = await supabase.auth.updateUser({
-      data: { username: username }
-    })
+      data: { username: username },
+    });
     if (data) {
-      return "Username updated successfully!"
+      return "Username updated successfully!";
     }
     if (error) {
-      return "There was an error updating your username."
+      return "There was an error updating your username.";
     }
   };
 
   const updatePassword = async (password) => {
-    const { data, error } = await supabase.auth.updateUser({password: password})
+    const { data, error } = await supabase.auth.updateUser({
+      password: password,
+    });
     if (data) {
-      return "Password updated successfully!"
+      return "Password updated successfully!";
     }
     if (error) {
-      return "There was an error updating your password."
+      return "There was an error updating your password.";
     }
   };
- 
+
+  const resetPassword = (password) => {
+    setNewPassword(password);
+  };
+
   useEffect(() => {
     const session = supabase.auth.getSession();
     setUser(session.user);
@@ -166,9 +169,16 @@ const useProvideAuth = () => {
           const { data, error } = await supabase.auth.updateUser({
             password: newPassword,
           });
+
           if (data) alert("Password updated successfully!");
           if (error) alert("There was an error updating your password.");
-          break;
+
+        // const { data } = await supabase.auth.updateUser({
+        //   password: newPassword,
+        // });
+        // if (data) ;
+        // console.log(newPassword)
+        // break;
         default:
       }
     });
@@ -183,6 +193,7 @@ const useProvideAuth = () => {
     login,
     logout,
     resetPassword,
+    forgotPassword,
     updateEmail,
     updatePassword,
     updateUsername,
