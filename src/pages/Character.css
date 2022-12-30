@@ -87,7 +87,7 @@
 
 .hordebanner1 {
   padding: 10px;
-  background-image: url(/Users/jerrycox/Documents/dev/wow-blacklist/client/public/assets/hordeBanner.jpeg);
+  background-image: url(/Users/jerrycox/Documents/dev/wow-blacklist/client/public/assets/horde-banner.jpeg);
   background-position: right;
   background-size: 60%;
 }
@@ -95,7 +95,7 @@
 
 .alliancebanner1 {
   padding: 10px;
-  background-image: url(/Users/jerrycox/Documents/dev/wow-blacklist/client/public/assets/hordeBanner.jpeg);
+  background-image: url(/Users/jerrycox/Documents/dev/wow-blacklist/client/public/assets/horde-banner.jpeg);
   background-position: right;
   background-size: 60%;
 }
