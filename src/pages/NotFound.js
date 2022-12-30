@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import pixelDino from "../assets/pixelDino.jpeg"
+import pixelDino from "../components/pixelDino.jpeg"
 
 const NotFound = () => {
   return (
