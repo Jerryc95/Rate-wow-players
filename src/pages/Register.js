@@ -22,7 +22,7 @@ const Register = () => {
       console.log([email]);
       setAlertMessage("An account is already associated with that email.");
     } else {
-      const signUp = await auth.signUp(email, username.toLowerCase, password);
+      const signUp = await auth.signUp(email, username, password);
       if(auth.user) {
         setAlertMessage("Account created! Please check your email to confirm your account.")
       }
