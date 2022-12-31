@@ -21,6 +21,9 @@ const Register = () => {
       console.log(users.map((user) => user.email));
       console.log([email]);
       setAlertMessage("An account is already associated with that email.");
+     } else if (username ==="") {
+      setAlertMessage("Please add a username.");
+  
     } else {
       const signUp = await auth.signUp(email, username, password);
       if(auth.user) {
@@ -37,25 +40,16 @@ const Register = () => {
         default:
       }
     }
-
-    // if(signUp) {
-    //     console.log(signUp.message)
-    //     setErrorMessage('Unable to create account. please try again later.')
-    // } else if(signUp.session === null) {
-    //   setErrorMessage('Account already exists with email.')
-    // } else {
-    //   setErrorMessage('Please confirm your email.')
-    // }
     setEmail("");
     setUsername("");
     setPassword("");
   };
 
-  useEffect(() => {
-    if (auth.user) {
-      return navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (auth.user) {
+  //     return navigate("/login");
+  //   }
+  // }, []);
 
   return (
     <div className="container">
