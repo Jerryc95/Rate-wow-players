@@ -68,7 +68,7 @@ const SearchField = () => {
           setRealm(e.target.value);
         }}
       />
-
+<span className="text-danger d-flex justify-content-center">{resultMessage}</span>
       <div className="d-flex justify-content-center p-2">
           <button
             className="btn btn-dark"
@@ -78,7 +78,7 @@ const SearchField = () => {
             Look Up
           </button>
       </div>
-      <span className="text-danger d-flex justify-content-center">{resultMessage}</span>
+      
     </div>
   );
 };

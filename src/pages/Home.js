@@ -12,7 +12,7 @@ const Home = () => {
       </div>
       <div className="row">
         <SearchField />
-        <div className="navbar fixed-bottom p-0">
+        <div className="navbar fixed-bottom p-0 bg-dark">
           <Footer />
         </div>
       </div>

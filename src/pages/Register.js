@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../Context/Auth";
 
 const Register = () => {
   const auth = useAuth();
-  const navigate = useNavigate();
+  
   const [alertMessage, setAlertMessage] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -44,12 +44,6 @@ const Register = () => {
     setUsername("");
     setPassword("");
   };
-
-  // useEffect(() => {
-  //   if (auth.user) {
-  //     return navigate("/login");
-  //   }
-  // }, []);
 
   return (
     <div className="container">
